@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="addCourse.css">
+    </head>
+    <body>
+        <div id="registration-form">
+            <div class='fieldset'>
+                <legend>Creating a Course...!</legend>
+                <form>
+                <div class='row'>
+                    <label for='title'>Title</label>
+                    <input type="text" placeholder="Title" name='title' id='title' required minlength="2">
+                </div>
+                <div class='row'>
+                    <label for="code">Code</label>
+                    <input type="Text" placeholder="Code"  name='code' id="code" required minlength="4" maxlength="8">
+                </div>
+                <input id="submitButton" type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+        <p id="successMessage"></p>
+        <script src="addCourse.js"></script>
+    </body>
+</html>

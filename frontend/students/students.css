@@ -1,0 +1,72 @@
+#systemName {
+    text-align: center
+}
+
+body {
+    font-size: xx-large;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #b4b4b4;
+}
+
+.editButton {
+    font-size: large;
+    margin: 10px;
+    color: white;
+    background-color: rgb(93, 93, 236);
+    border: 0;
+    border-radius: 10px;
+    padding: 5px;
+    
+}
+
+.editButton:hover {
+    transform: scale(1.1);
+    background-color: rgb(24, 24, 219);
+}
+
+.deleteButton {
+    font-size: large;
+    margin: 10px;
+    color: white;
+    background-color: rgb(223, 37, 37);
+    border: 0;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.deleteButton:hover {
+    transform: scale(1.1);
+    background-color: rgb(158, 12, 12);
+}
+
+#navigationDiv {
+    text-align: center;
+}
+
+
+#addButton, #coursesPageButton {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 10px;
+
+  color: #fff;
+  background-color: #007bff;
+  text-decoration: none;
+
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+
+#addButton:hover, #coursesPageButton:hover,
+#coursesPageButton:focus {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+#studentObject {
+    height: 50px;
+}
