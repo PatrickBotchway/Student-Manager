@@ -3,9 +3,9 @@ const router = express.Router();
 
 
 const studentsController  = require('../controllers/studentsController');
-const { validateStudent } = require('../middleware/studentValidation')
+const { validateStudent, validateQuery } = require('../middleware/studentValidation')
 
-router.get('/', studentsController.getStudents);
+router.get('/', validateQuery, studentsController.getStudents);
 
 router.get('/:id', studentsController.getStudent);
 

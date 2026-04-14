@@ -2,7 +2,10 @@ const studentsService = require('../services/studentsService');
 
 const getStudents = async (req, res) => {
     try {
-        const students = await studentsService.getAllStudents()
+        const page = req.pagination.page || 1;
+        const limit = req.pagination.limit || 10;
+
+        const students = await studentsService.getAllStudents(page, limit)
         res.json(students);
     }
     

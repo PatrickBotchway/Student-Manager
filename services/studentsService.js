@@ -1,7 +1,8 @@
 const studentsModel = require('../models/studentsModel');
 
-const getAllStudents = async () => {
-        return await studentsModel.findAll();
+const getAllStudents = async (page, limit) => {
+        const offset = (page - 1) * limit;
+        return await studentsModel.findAll(limit, offset);
 }
 
 const getStudentById = async (id) => {

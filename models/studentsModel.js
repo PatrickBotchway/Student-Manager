@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
-const findAll = async () => {
-    const [rows] = await db.execute('SELECT * FROM students')
+const findAll = async (limit, offset) => {
+    const [rows] = await db.execute('SELECT * FROM students LIMIT ? OFFSET ?', [String(limit), String(offset)])
     return (rows);
 }
 
