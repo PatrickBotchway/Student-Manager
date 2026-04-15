@@ -1,8 +1,8 @@
-const joi = require('joi');
+const Joi = require('joi');
 
 const validateStudent = async (req, res, next) => {
-    const schema = joi.object({
-        name: joi.string().min(2).required()
+    const schema = Joi.object({
+        name: Joi.string().min(2).required()
     });
 
     const { error } = schema.validate(req.body)
@@ -14,9 +14,9 @@ const validateStudent = async (req, res, next) => {
 }
 
 const validateQuery = async(req, res, next) => {
-    const schema = joi.object({
-        page: joi.number().integer().min(1).default(1),
-        limit: joi.number().integer().min(1).max(100).default(10)
+    const schema = Joi.object({
+        page: Joi.number().integer().min(1).default(1),
+        limit: Joi.number().integer().min(1).max(100).default(10)
     });
 
     const { error, value } = schema.validate(req.query)

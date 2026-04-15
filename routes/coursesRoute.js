@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 const coursesController = require('../controllers/coursesController');
-const { validateCourse, validateCourseTitle, validateCourseCode, validateCourseCapacity } = require('../middleware/courseValidation')
+const { validateCourse, validateCourseTitle, validateCourseCode, validateCourseCapacity, validateQuery } = require('../middleware/courseValidation')
 
-router.get('/', coursesController.getCourses);
+router.get('/', validateQuery, coursesController.getCourses);
 
 router.get('/:id', coursesController.getCourse);
 
@@ -18,6 +18,6 @@ router.put('/capacity/:id', validateCourseCapacity, coursesController.editCourse
 
 router.delete('/:id', coursesController.removeCourse);
 
-router.get('/:id/students', coursesController.getCourseStudents);
+router.get('/:id/students', validateQuery, coursesController.getCourseStudents);
 
 module.exports = router;

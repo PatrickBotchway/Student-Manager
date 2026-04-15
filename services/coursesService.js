@@ -1,7 +1,8 @@
 const coursesModel = require('../models/coursesModel');
 
-const getAllCourses = async () => {
-    return await coursesModel.findAll();
+const getAllCourses = async (page, limit) => {
+    const offset = (page - 1) * limit;
+    return await coursesModel.findAll(limit, offset);
 }
 
 const getCourseById = async (id) => {
@@ -47,8 +48,9 @@ const deleteCourse = async (id) => {
     return await coursesModel.remove(id)
 }
 
-const getCourseStudents = async (id) => {
-    return await coursesModel.findCourseStudents(id);
+const getCourseStudents = async (id, page, limit) => {
+    const offset = (page - 1) * limit
+    return await coursesModel.findCourseStudents(id, limit, offset);
 }
 
 

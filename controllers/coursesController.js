@@ -3,7 +3,10 @@ const coursesService = require('../services/coursesService');
 
 const getCourses = async (req, res) => {
     try {
-        const courses = await coursesService.getAllCourses();
+        const page = req.pagination.page || 1;
+        const limit = req.pagination.limit || 10;
+
+        const courses = await coursesService.getAllCourses(page, limit);
         res.json(courses);
     }
     
@@ -153,7 +156,10 @@ const getCourseStudents = async (req, res) => {
     try {
         await coursesService.getCourseById(req.params.id);
 
-        const enrolledStudents = await coursesService.getCourseStudents(req.params.id);
+        const page = req.pagination.page;
+        const limit = req.pagination.limit;
+
+        const enrolledStudents = await coursesService.getCourseStudents(req.params.id, page, limit);
 
         res.status(200).json({
             course_id: req.params.id,

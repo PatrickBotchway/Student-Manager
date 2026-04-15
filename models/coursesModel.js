@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
-const findAll = async () => {
-    const [rows] = await db.execute('SELECT * FROM courses')
+const findAll = async (limit, offset) => {
+    const [rows] = await db.execute('SELECT * FROM courses LIMIT ? OFFSET ?', [String(limit), String(offset)])
     return (rows);
 }
 
@@ -37,8 +37,8 @@ const remove = async (id) => {
 }
 
 // This finds all the students who have enrolled in the course with the given ID.
-const findCourseStudents = async (id) => {
-    const [ rows ] = await db.execute('SELECT e.student_id, s.name FROM enrollments e JOIN students s USING (student_id) WHERE e.course_id = ? ORDER BY s.name', [id]);
+const findCourseStudents = async (id, limit, offset) => {
+    const [ rows ] = await db.execute('SELECT e.student_id, s.name FROM enrollments e JOIN students s USING (student_id) WHERE e.course_id = ? ORDER BY s.name LIMIT ? OFFSET ?', [id, String(limit), String(offset)]);
     return rows;
 }
 
