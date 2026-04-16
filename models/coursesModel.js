@@ -1,8 +1,9 @@
 const db = require('../config/db');
 
 const findAll = async (limit, offset) => {
-    const [rows] = await db.execute('SELECT * FROM courses LIMIT ? OFFSET ?', [String(limit), String(offset)])
-    return (rows);
+    const [ courses ] = await db.execute('SELECT * FROM courses LIMIT ? OFFSET ?', [String(limit), String(offset)])
+    const [ total ] = await db.execute('SELECT COUNT(*) AS total FROM courses')
+    return { courses: courses, total: total[0].total};
 }
 
 const findById = async (id) => {
@@ -25,7 +26,7 @@ const updateCode = async (id, code) => {
 // Counts the number of enrollments for the course with the given ID.
 const enrollmentCount = async (id) => {
     const [ rows ] = await db.execute('SELECT COUNT(*) AS count FROM enrollments WHERE course_id = ?', [id]);
-    return rows[0];
+    return rows[0].count;
 }
 
 const updateCapacity = async (id, capacity) => {

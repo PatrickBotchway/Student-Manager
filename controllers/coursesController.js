@@ -6,10 +6,18 @@ const getCourses = async (req, res) => {
         const page = req.pagination.page || 1;
         const limit = req.pagination.limit || 10;
 
-        const courses = await coursesService.getAllCourses(page, limit);
+        const { courses, total } = await coursesService.getAllCourses(page, limit);
         res.json({
             success: true,
-            data: courses
+            data: courses,
+            meta: {
+                page: page,
+                limit: limit,
+                total: total,
+                totalPages: Math.ceil(total/limit),
+                hasPreviousPage: page > 1,
+                hasNextPage: page < Math.ceil(total/limit)
+            }
         });
     }
     
@@ -224,13 +232,21 @@ const getCourseStudents = async (req, res) => {
         const page = req.pagination.page;
         const limit = req.pagination.limit;
 
-        const enrolledStudents = await coursesService.getCourseStudents(req.params.id, page, limit);
+        const { students, total } = await coursesService.getCourseStudents(req.params.id, page, limit);
 
         res.status(200).json({
             success: true,
             data: {
                 course_id: req.params.id,
-                enrolledStudents
+                students
+            },
+            meta: {
+                page: page,
+                limit: limit,
+                total: total,
+                totalPages: Math.ceil(total/limit),
+                hasPreviousPage: page > 1,
+                hasNextPage: page < Math.ceil(total/limit)
             }
         });
     }

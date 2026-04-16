@@ -1,8 +1,9 @@
 const db = require('../config/db');
 
 const findAll = async (limit, offset) => {
-    const [rows] = await db.execute('SELECT * FROM students LIMIT ? OFFSET ?', [String(limit), String(offset)])
-    return (rows);
+    const [ students ] = await db.execute('SELECT * FROM students LIMIT ? OFFSET ?', [String(limit), String(offset)])
+    const [ total ] = await db.execute('SELECT COUNT(*) AS total FROM students')
+    return { students: students, total: total[0].total };
 }
 
 

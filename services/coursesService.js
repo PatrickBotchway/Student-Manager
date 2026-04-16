@@ -31,7 +31,7 @@ const updateCourseCode = async (id, code) => {
 const updateCourseCapacity = async (id, capacity) => {
     const enrollments = await coursesModel.enrollmentCount(id)
 
-    if (enrollments.count > capacity) {
+    if (enrollments > capacity) {
         throw new Error('The current enrollments exceed the desired course capacity!')
     }
 
@@ -41,7 +41,7 @@ const updateCourseCapacity = async (id, capacity) => {
 const deleteCourse = async (id) => {
     const enrollments = await coursesModel.enrollmentCount(id);
 
-    if (enrollments.count > 0) {
+    if (enrollments > 0) {
         throw new Error('Cannot delete a course with students enrolled in it!')
     }
 
@@ -49,8 +49,12 @@ const deleteCourse = async (id) => {
 }
 
 const getCourseStudents = async (id, page, limit) => {
-    const offset = (page - 1) * limit
-    return await coursesModel.findCourseStudents(id, limit, offset);
+    const offset = (page - 1) * limit;
+
+    const total = await coursesModel.enrollmentCount(id);
+    const students = await coursesModel.findCourseStudents(id, limit, offset);
+    
+    return { total: total, students: students}
 }
 
 

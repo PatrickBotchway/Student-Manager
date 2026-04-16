@@ -5,10 +5,20 @@ const getStudents = async (req, res) => {
         const page = req.pagination.page || 1;
         const limit = req.pagination.limit || 10;
 
-        const students = await studentsService.getAllStudents(page, limit)
+
+
+        const { students, total } = await studentsService.getAllStudents(page, limit)
         res.json({
             success: true,
-            data: students
+            data: students,
+            meta: {
+                page: page,
+                limit: limit,
+                total: total,
+                totalPages: Math.ceil(total/limit),
+                hasPreviousPage: page > 1,
+                hasNextPage: page < Math.ceil(total/limit)
+            }
         });
     }
     
