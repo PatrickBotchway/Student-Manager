@@ -6,12 +6,18 @@ const getStudents = async (req, res) => {
         const limit = req.pagination.limit || 10;
 
         const students = await studentsService.getAllStudents(page, limit)
-        res.json(students);
+        res.json({
+            success: true,
+            data: students
+        });
     }
     
     catch (err) {
         console.error(err);
-        res.status(500).json('Error fetching students');
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching students'
+        });
     };
 
 }
@@ -20,7 +26,10 @@ const getStudent = async (req, res) => {
     try {
         const student = await studentsService.getStudentById(req.params.id);
 
-        res.json(student);
+        res.json({
+            success: true,
+            data: student
+        });
        
     }
     
@@ -28,10 +37,16 @@ const getStudent = async (req, res) => {
         console.error(err)
 
         if (err.message === 'The student with the given ID was not found!') {
-            return res.status(404).json(err.message)
+            return res.status(404).json({
+                success: false,
+                message: err.message
+            })
         }
         
-        res.status(500).json('Error fetching data.')
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching student.'
+        })
     }
     
     
@@ -41,14 +56,20 @@ const addStudent = async (req, res) => {
     try {
         const result = await studentsService.addNewStudent(req.body.name);
         res.status(201).json({
-            student_id: result.insertId,
-            name: req.body.name
+            success: true,
+            data: {
+                student_id: result.insertId,
+                name: req.body.name
+            }
         });
     }
 
     catch (err) {
         console.error(err)
-        res.status(500).json('Error Adding Student.')
+        res.status(500).json({
+            success: false,
+            message: 'Error adding student.'
+        })
     }
 }
 
@@ -58,8 +79,11 @@ const editStudent = async (req, res) => {
 
         await studentsService.updateStudent(req.params.id, req.body.name)
         res.json({
-            student_id: req.params.id,
-            name: req.body.name
+            success: true,
+            data: {
+                student_id: req.params.id,
+                name: req.body.name
+            }
         });
     }
 
@@ -67,10 +91,16 @@ const editStudent = async (req, res) => {
         console.error(err)
 
         if (err.message === 'The student with the given ID was not found!') {
-            return res.status(404).json(err.message)
+            return res.status(404).json({
+                success: false,
+                message: err.message
+            })
         }
 
-        res.status(500).json('Error Updating Student.')
+        res.status(500).json({
+            success: false,
+            message: 'Error updating student.'
+        })
     }
 }
 
@@ -79,21 +109,33 @@ const removeStudent = async (req, res) => {
        const student = await studentsService.getStudentById(req.params.id);
 
         await studentsService.deleteStudent(req.params.id);
-        res.json(student);
+        res.json({
+            success: true,
+            data: student
+        });
     }
 
     catch (err) {
         console.error(err);
 
         if (err.message === 'The student with the given ID was not found!') {
-            return res.status(404).json(err.message)
+            return res.status(404).json({
+                success: false,
+                message: err.message
+            })
         }
 
         else if (err.message === 'Cannot delete enrolled student!') {
-            return res.status(409).json(err.message);
+            return res.status(409).json({
+                success: false,
+                message: err.message
+            });
         }
 
-        res.status(500).json('Error Deleting Student');
+        res.status(500).json({
+            success: false,
+            message: 'Error deleting student'
+        });
     }
 }
 
@@ -104,8 +146,12 @@ const getStudentCourses = async (req, res) => {
         
         const enrolledCourses = await studentsService.getStudentCourses(req.params.id);
         res.status(200).json({
-            student_id: req.params.id,
-            enrolledCourses
+            success: true,
+            data: {
+                student_id: req.params.id,
+                enrolledCourses
+            }
+            
         });
     }
     
@@ -113,10 +159,16 @@ const getStudentCourses = async (req, res) => {
         console.error(err);
 
         if (err.message === 'The student with the given ID was not found!') {
-            return res.status(404).json(err.message)
+            return res.status(404).json({
+                success: false,
+                message: err.message
+            })
         }
         
-        res.status(500).json('Error querying students for given course.');
+        res.status(500).json({
+            success: false,
+            message: 'Error querying students for given course.'
+        });
     }
 }
 

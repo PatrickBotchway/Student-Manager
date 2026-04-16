@@ -7,12 +7,18 @@ const getCourses = async (req, res) => {
         const limit = req.pagination.limit || 10;
 
         const courses = await coursesService.getAllCourses(page, limit);
-        res.json(courses);
+        res.json({
+            success: true,
+            data: courses
+        });
     }
     
     catch (err) {
         console.error(err);
-        res.status(500).json('Error fetching courses');
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching courses'
+        });
     };
 
 }
@@ -21,17 +27,26 @@ const getCourse = async (req, res) => {
     try {
         const course = await coursesService.getCourseById(req.params.id);
 
-        res.json(course);
+        res.json({
+            success: true,
+            data: course
+        });
     }
 
     catch (err) {
         console.error(err)
 
         if (err.message === 'The course with the given ID was not found') {
-            return res.status(404).json(err.message);
+            return res.status(404).json({
+                success: false,
+                message: err.message
+            });
         }
         
-        res.status(500).json('Error fetching data.')
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching data.'
+        });
     }
 
 
@@ -41,16 +56,22 @@ const addCourse = async (req, res) => {
     try {
         const result = await coursesService.addNewCourse(req.body.title, req.body.code, req.body.capacity);
         res.json({
-            course_id: result.insertId,
-            title: req.body.title,
-            code: req.body.code,
-            capacity: req.params.capacity
+            success: true,
+            data: {
+                course_id: result.insertId,
+                title: req.body.title,
+                code: req.body.code,
+                capacity: req.params.capacity
+            }
         });
     }
 
     catch (err) {
         console.error(err)
-        res.status(500).json('Error Adding Course.')
+        res.status(500).json({
+            success: false,
+            message: 'Error Adding Course.'
+        })
     }
 }
 
@@ -60,9 +81,13 @@ const editCourseTitle = async (req, res) => {
 
         await coursesService.updateCourseTitle(req.params.id, req.body.title);
         res.json({
-            course_id: req.params.id,
-            title: req.body.title,
-            code: course.code
+            success: true,
+            data: {
+                course_id: req.params.id,
+                title: req.body.title,
+                code: course.code,
+                capacity: course.capacity
+            }
         });
     }
 
@@ -70,10 +95,16 @@ const editCourseTitle = async (req, res) => {
         console.error(err)
 
         if (err.message === 'The course with the given ID was not found') {
-            return res.status(404).json(err.message);
+            return res.status(404).json({
+                success: false,
+                message: err.message
+            });
         }
 
-        res.status(500).json('Error Updating Course Title.')
+        res.status(500).json({
+            success: false,
+            message: 'Error Updating Course Title.'
+        })
     }
 }
 
@@ -83,9 +114,13 @@ const editCourseCode = async (req, res) => {
 
         await coursesService.updateCourseCode(req.params.id, req.body.code)
         res.json({
-            course_id: req.params.id,
-            title: course.title,
-            code: req.body.code
+            success: true,
+            data: {
+                course_id: req.params.id,
+                title: course.title,
+                code: req.body.code,
+                capacity: course.capacity
+            }
         });
     }
 
@@ -93,10 +128,16 @@ const editCourseCode = async (req, res) => {
         console.error(err)
 
         if (err.message === 'The course with the given ID was not found') {
-            return res.status(404).json(err.message);
+            return res.status(404).json({
+                success: false,
+                message: err.message
+            });
         }
 
-        res.status(500).json('Error Updating Course Code.')
+        res.status(500).json({
+            success: false,
+            message: 'Error Updating Course Code.'
+        })
     }
 }
 
@@ -107,10 +148,13 @@ const editCourseCapacity = async (req, res) => {
         await coursesService.updateCourseCapacity(req.params.id, req.body.capacity);
 
         res.json({
-            course_id: req.params.id,
-            title: course.title,
-            code: course.code,
-            capacity: req.body.capacity
+            success: true,
+            data: {
+                course_id: req.params.id,
+                title: course.title,
+                code: course.code,
+                capacity: req.body.capacity
+            }
         });
     }
 
@@ -118,14 +162,23 @@ const editCourseCapacity = async (req, res) => {
         console.error(err)
 
         if (err.message === 'The course with the given ID was not found') {
-            return res.status(404).json(err.message);
+            return res.status(404).json({
+                success: false,
+                message: err.message
+            });
         }
 
         else if (err.message === 'The current enrollments exceed the desired course capacity!') {
-            return res.status(409).json(err.message)
+            return res.status(409).json({
+                success: false,
+                message: err.message
+            })
         }
         
-        res.status(500).json('Error Updating Course Capacity.')
+        res.status(500).json({
+            success: false,
+            message: 'Error Updating Course Capacity.'
+        })
     }
 }
 
@@ -134,20 +187,32 @@ const removeCourse = async (req, res) => {
         const course = await coursesService.getCourseById(req.params.id);
 
         await coursesService.deleteCourse(req.params.id);
-        res.json(course);
+        res.json({
+            success: true,
+            data: course
+        });
     }
     catch (err) {
         console.error(err);
 
         if (err.message === 'The course with the given ID was not found') {
-            return res.status(404).json(err.message);
+            return res.status(404).json({
+                success: false,
+                message: err.message
+            });
         }
 
         else if (err.message === 'Cannot delete a course with students enrolled in it!') {
-            return res.status(409).json(err.message)
+            return res.status(409).json({
+                success: false,
+                message: err.message
+            })
         }
 
-        res.status(500).json('Error Deleting Course')
+        res.status(500).json({
+            success: false,
+            message: 'Error Deleting Course'
+        })
     }
 }
 
@@ -162,8 +227,11 @@ const getCourseStudents = async (req, res) => {
         const enrolledStudents = await coursesService.getCourseStudents(req.params.id, page, limit);
 
         res.status(200).json({
-            course_id: req.params.id,
-            enrolledStudents
+            success: true,
+            data: {
+                course_id: req.params.id,
+                enrolledStudents
+            }
         });
     }
 
@@ -171,10 +239,16 @@ const getCourseStudents = async (req, res) => {
         console.error(err);
 
         if (err.message === 'The course with the given ID was not found') {
-            return res.status(404).json(err.message);
+            return res.status(404).json({
+                success: false,
+                message: err.message
+            });
         }
 
-        res.status(500).json('Error querying students for the given course.');
+        res.status(500).json({
+            success: false,
+            message: 'Error querying students for the given course.'
+        });
     }
 }
 
