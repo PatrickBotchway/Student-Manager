@@ -12,11 +12,13 @@ const addEnrollment = async (student_id, course_id) => {
     return result;
 }
 
+const deleteEnroll = async (student_id, course_id) => {
+    await db.execute('DELETE FROM enrollments WHERE student_id = ? AND course_id = ?', [student_id, course_id]);
+}
 
 
 
 
 
 
-
-module.exports = { findEnrollment, addEnrollment }
+module.exports = { findEnrollment, addEnrollment, deleteEnroll }

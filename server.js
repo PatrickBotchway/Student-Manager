@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 app.use('/api/students', students);
 app.use('/api/courses', courses);
-app.use('/api/enrollment', enrollments);
+app.use('/api/enrollments', enrollments);
 
 
 

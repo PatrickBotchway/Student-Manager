@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const enrollment = require('../controllers/enrollmentsController');
+const { enrollStudent, removeEnrollment } = require('../controllers/enrollmentsController');
 
-router.post('/:student_id/:course_id', enrollment.enrollStudent);
+router.post('/:student_id/:course_id', enrollStudent);
+router.delete('/:student_id/:course_id', removeEnrollment)
 
 
 module.exports = router;
