@@ -69,4 +69,5 @@ const validateQuery = async(req, res, next) => {
 
     next();
 }
+
 module.exports = { validateCourse, validateCourseTitle, validateCourseCode, validateCourseCapacity, validateQuery };

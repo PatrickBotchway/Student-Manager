@@ -83,7 +83,7 @@ const removeEnrollment = async (req, res) =>  {
             })
         }
 
-        else if (err.message === 'This enrollment does not exist') {
+        else if (err.message === 'Enrollment not found') {
             return res.status(404).json({
                 success: false,
                 message: err.message
