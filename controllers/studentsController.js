@@ -8,9 +8,10 @@ const getStudents = async (req, res) => {
 
 
         const { students, total } = await studentsService.getAllStudents(page, limit)
-        res.json({
+        res.status(200).json({
             success: true,
             data: students,
+            message: 'Students fetched successfully',
             meta: {
                 page: page,
                 limit: limit,
@@ -36,9 +37,10 @@ const getStudent = async (req, res) => {
     try {
         const student = await studentsService.getStudentById(req.params.id);
 
-        res.json({
+        res.status(200).json({
             success: true,
-            data: student
+            data: student,
+            message: 'Student fetched successfully'
         });
        
     }
@@ -70,7 +72,8 @@ const addStudent = async (req, res) => {
             data: {
                 student_id: result.insertId,
                 name: req.body.name
-            }
+            },
+            message: 'Student was created successfully'
         });
     }
 
@@ -85,15 +88,16 @@ const addStudent = async (req, res) => {
 
 const editStudent = async (req, res) => {
     try {
-        await studentsService.getStudentById(req.params.id);
+        const student = await studentsService.getStudentById(req.params.id);
 
         await studentsService.updateStudent(req.params.id, req.body.name)
-        res.json({
+        res.status(200).json({
             success: true,
             data: {
                 student_id: req.params.id,
                 name: req.body.name
-            }
+            },
+            message: `Student ${student.name} has been changed to ${req.body.name} successfully`
         });
     }
 
@@ -119,9 +123,10 @@ const removeStudent = async (req, res) => {
        const student = await studentsService.getStudentById(req.params.id);
 
         await studentsService.deleteStudent(req.params.id);
-        res.json({
+        res.status(200).json({
             success: true,
-            data: student
+            data: student,
+            message: `${student.name} has been deleted successfully`
         });
     }
 
@@ -152,7 +157,7 @@ const removeStudent = async (req, res) => {
 // This gets all the courses the student with the given ID has enrolled in.
 const getStudentCourses = async (req, res) => {
     try {
-        await studentsService.getStudentById(req.params.id);
+        const student = await studentsService.getStudentById(req.params.id);
         
         const enrolledCourses = await studentsService.getStudentCourses(req.params.id);
         res.status(200).json({
@@ -160,8 +165,8 @@ const getStudentCourses = async (req, res) => {
             data: {
                 student_id: req.params.id,
                 enrolledCourses
-            }
-            
+            },
+            message: `Courses ${student.name} has enrolled in has been fetched successfully`
         });
     }
     

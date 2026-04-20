@@ -16,7 +16,7 @@ const enrollStudent = async (req, res) => {
                 student: student,
                 course: course,
             },
-            message: `${student.name} has been enrolled in ${course.title}`
+            message: `${student.name} has been enrolled in ${course.title} successfully`
         });
     }
         
@@ -64,7 +64,7 @@ const removeEnrollment = async (req, res) =>  {
                 student: student,
                 course: course,
             },
-            message: `${student.name} has been disenrolled from ${course.title}`
+            message: `${student.name} has been disenrolled from ${course.title} successfully`
         });
     }
     

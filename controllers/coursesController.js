@@ -7,9 +7,10 @@ const getCourses = async (req, res) => {
         const limit = req.pagination.limit || 10;
 
         const { courses, total } = await coursesService.getAllCourses(page, limit);
-        res.json({
+        res.status(200).json({
             success: true,
             data: courses,
+            message: 'Courses fetched successfully',
             meta: {
                 page: page,
                 limit: limit,
@@ -35,9 +36,10 @@ const getCourse = async (req, res) => {
     try {
         const course = await coursesService.getCourseById(req.params.id);
 
-        res.json({
+        res.status(200).json({
             success: true,
-            data: course
+            data: course,
+            message: 'Course fetched successfully'
         });
     }
 
@@ -63,14 +65,15 @@ const getCourse = async (req, res) => {
 const addCourse = async (req, res) => {
     try {
         const result = await coursesService.addNewCourse(req.body.title, req.body.code, req.body.capacity);
-        res.json({
+        res.status(201).json({
             success: true,
             data: {
                 course_id: result.insertId,
                 title: req.body.title,
                 code: req.body.code,
                 capacity: req.params.capacity
-            }
+            },
+            message: 'Course was created successfully'
         });
     }
 
@@ -78,7 +81,7 @@ const addCourse = async (req, res) => {
         console.error(err)
         res.status(500).json({
             success: false,
-            message: 'Error Adding Course.'
+            message: 'Error Adding Course'
         })
     }
 }
@@ -88,14 +91,15 @@ const editCourseTitle = async (req, res) => {
         const  course  = await coursesService.getCourseById(req.params.id);
 
         await coursesService.updateCourseTitle(req.params.id, req.body.title);
-        res.json({
+        res.status(200).json({
             success: true,
             data: {
                 course_id: req.params.id,
                 title: req.body.title,
                 code: course.code,
                 capacity: course.capacity
-            }
+            },
+            message: `Title ${course.title} has been changed to ${req.body.title} successfully`
         });
     }
 
@@ -121,14 +125,15 @@ const editCourseCode = async (req, res) => {
         const course = await coursesService.getCourseById(req.params.id);
 
         await coursesService.updateCourseCode(req.params.id, req.body.code)
-        res.json({
+        res.status(200).json({
             success: true,
             data: {
                 course_id: req.params.id,
                 title: course.title,
                 code: req.body.code,
                 capacity: course.capacity
-            }
+            },
+            message: `Code ${course.code} has been changed to ${req.body.code} successfully`
         });
     }
 
@@ -155,14 +160,15 @@ const editCourseCapacity = async (req, res) => {
 
         await coursesService.updateCourseCapacity(req.params.id, req.body.capacity);
 
-        res.json({
+        res.status(200).json({
             success: true,
             data: {
                 course_id: req.params.id,
                 title: course.title,
                 code: course.code,
                 capacity: req.body.capacity
-            }
+            },
+            message: `Capacity {course.capacity} has been changed to ${req.body.capacity} successfully`
         });
     }
 
@@ -195,9 +201,10 @@ const removeCourse = async (req, res) => {
         const course = await coursesService.getCourseById(req.params.id);
 
         await coursesService.deleteCourse(req.params.id);
-        res.json({
+        res.status(200).json({
             success: true,
-            data: course
+            data: course,
+            message: `${course.title} has been deleted successfully`
         });
     }
     catch (err) {
@@ -227,7 +234,7 @@ const removeCourse = async (req, res) => {
 // This gets all the students who have enrolled in the course with the given ID.
 const getCourseStudents = async (req, res) => {
     try {
-        await coursesService.getCourseById(req.params.id);
+        const course = await coursesService.getCourseById(req.params.id);
 
         const page = req.pagination.page;
         const limit = req.pagination.limit;
@@ -240,6 +247,7 @@ const getCourseStudents = async (req, res) => {
                 course_id: req.params.id,
                 students
             },
+            message: `Students enrolled in ${course.title} have been fetched successfully`,
             meta: {
                 page: page,
                 limit: limit,
