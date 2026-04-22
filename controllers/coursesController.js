@@ -71,7 +71,7 @@ const addCourse = async (req, res) => {
                 course_id: result.insertId,
                 title: req.body.title,
                 code: req.body.code,
-                capacity: req.params.capacity
+                capacity: req.body.capacity
             },
             message: 'Course was created successfully'
         });

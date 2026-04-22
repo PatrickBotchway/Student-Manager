@@ -4,8 +4,8 @@ const validateStudent = (req, res, next) => {
     const schema = Joi.object({
         name: Joi.string().min(2).required().messages({
             'string.base': 'The name must be a valid string (e.g., John, Betty)',
-            'string.min': 'The name must have at least 2 characters',
-            'any.required': 'A name is required'
+            'string.min': 'The name must have at least 2 characters (e.g., John, Betty)',
+            'any.required': 'A name is required (e.g., John, Betty)'
         })
     });
 
