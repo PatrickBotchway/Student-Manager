@@ -1,4 +1,4 @@
-const { addUser } = require('../services/authService');
+const { addUser, authUser } = require('../services/authService');
 
 const registerUser = async (req, res) => {
     try {
@@ -18,7 +18,7 @@ const registerUser = async (req, res) => {
     catch (err) {
         console.log(err);
 
-        if (err.message = 'The email provided has already been used') {
+        if (err.message === 'The email provided has already been used') {
             return res.status(409).json({
                 success: false,
                 message: err.message
@@ -33,4 +33,35 @@ const registerUser = async (req, res) => {
 
 }
 
-module.exports = { registerUser }
+const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const token = await authUser(email, password)
+
+        res.status(200).json({
+            success: true,
+            data: {token: token},
+            message: 'User authentication was successful. Token sent'
+        })
+    }
+
+    catch (err) {
+        console.log(err)
+
+        if (err.message === 'The email or password is incorrect') {
+            return res.status(401).json({
+                success: false,
+                message: err.message
+            })
+        }
+
+        return res.status(500).json({
+            success: false,
+            message: 'Error logging user in'
+        })
+    }
+}
+
+
+
+module.exports = { registerUser, loginUser }

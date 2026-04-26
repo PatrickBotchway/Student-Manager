@@ -6,7 +6,12 @@ const checkEmail = async (email) => {
 }
 
 const create = async (name, email, password) => {
-    await db.execute('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, password])
+    await db.execute('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [ name, email, password ])
 }
 
-module.exports = { checkEmail, create };
+const findByEmail = async (email) => {
+    const [ rows ] = await db.execute('SELECT * FROM users WHERE email = ?', [ email ]);
+    return rows[0];
+}
+
+module.exports = { checkEmail, create, findByEmail };

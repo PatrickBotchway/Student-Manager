@@ -3,19 +3,20 @@ const router = express.Router();
 
 
 const studentsController  = require('../controllers/studentsController');
-const { validateStudent, validateQuery } = require('../middleware/studentValidation')
-const { validateParams } = require('../middleware/paramsValidation');
+const { validateStudent, validateQuery } = require('../middleware/validation/studentValidation')
+const { validateParams } = require('../middleware/validation/paramsValidation');
+const { authToken } = require('../middleware/authentication/authTokens');
 
-router.get('/', validateQuery, studentsController.getStudents);
+router.get('/', authToken, validateQuery, studentsController.getStudents);
 
-router.get('/:id', validateParams, studentsController.getStudent);
+router.get('/:id', authToken, validateParams, studentsController.getStudent);
 
-router.post('/', validateStudent, studentsController.addStudent);
+router.post('/', authToken, validateStudent, studentsController.addStudent);
 
-router.put('/:id', validateParams, validateStudent, studentsController.editStudent);
+router.put('/:id', authToken, validateParams, validateStudent, studentsController.editStudent);
 
-router.delete('/:id', validateParams, studentsController.removeStudent);
+router.delete('/:id', authToken, validateParams, studentsController.removeStudent);
 
-router.get('/:id/courses', validateParams, studentsController.getStudentCourses);
+router.get('/:id/courses', authToken, validateParams, studentsController.getStudentCourses);
 
 module.exports = router;

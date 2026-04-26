@@ -1,24 +1,25 @@
 const express = require('express');
 const router = express.Router();
 
-const coursesController = require('../controllers/coursesController');
-const { validateCourse, validateCourseTitle, validateCourseCode, validateCourseCapacity, validateQuery } = require('../middleware/courseValidation')
-const { validateParams } = require('../middleware/paramsValidation')
+const { getCourses, getCourse, addCourse, editCourseTitle, editCourseCode, editCourseCapacity, removeCourse, getCourseStudents } = require('../controllers/coursesController');
+const { validateCourse, validateCourseTitle, validateCourseCode, validateCourseCapacity, validateQuery } = require('../middleware/validation/courseValidation');
+const { validateParams } = require('../middleware/validation/paramsValidation');
+const { authToken } = require('../middleware/authentication/authTokens');
 
-router.get('/', validateQuery, coursesController.getCourses);
+router.get('/', authToken, validateQuery, getCourses);
 
-router.get('/:id', validateParams, coursesController.getCourse);
+router.get('/:id', authToken, validateParams, getCourse);
 
-router.post('/', validateCourse, coursesController.addCourse);
+router.post('/', authToken, validateCourse, addCourse);
 
-router.put('/title/:id', validateParams, validateCourseTitle, coursesController.editCourseTitle);
+router.put('/title/:id', authToken, validateParams, validateCourseTitle, editCourseTitle);
 
-router.put('/code/:id', validateParams, validateCourseCode, coursesController.editCourseCode);
+router.put('/code/:id', authToken, validateParams, validateCourseCode, editCourseCode);
 
-router.put('/capacity/:id', validateParams, validateCourseCapacity, coursesController.editCourseCapacity);
+router.put('/capacity/:id', authToken, validateParams, validateCourseCapacity, editCourseCapacity);
 
-router.delete('/:id', validateParams, coursesController.removeCourse);
+router.delete('/:id', authToken, validateParams, removeCourse);
 
-router.get('/:id/students', validateParams, validateQuery, coursesController.getCourseStudents);
+router.get('/:id/students', authToken, validateParams, validateQuery, getCourseStudents);
 
 module.exports = router;
