@@ -29,7 +29,7 @@ const authUser = async (email, password) => {
         id: user.user_id,
         role: user.role
     }, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES_IN}, 
-        
+
     )
     return token;
 }

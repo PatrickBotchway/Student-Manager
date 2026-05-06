@@ -2,6 +2,13 @@ const coursesModel = require('../models/coursesModel');
 const coursesService = require('../services/coursesService');
 
 const getCourses = async (req, res) => {
+
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({
+            success: false,
+            message: 'You do not have permission to perform this action'
+        })
+    }
     try {
         const page = req.pagination.page || 1;
         const limit = req.pagination.limit || 10;
